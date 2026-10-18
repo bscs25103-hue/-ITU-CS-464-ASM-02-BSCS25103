@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float squashDuration = 0.2f;
 
     Rigidbody rb;
+    Transform camTransform;
     bool isGrounded;
     float jumpBufferTimer;
     float coyoteTimer;
@@ -26,6 +27,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+        if (Camera.main != null)
+        {
+            camTransform = Camera.main.transform;
+        }
     }
 
     void Update()
@@ -55,9 +60,31 @@ public class PlayerController : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        Vector3 move = new Vector3(h, 0, v);
+
+        Vector3 forward = Vector3.forward;
+        Vector3 right = Vector3.right;
+
+        if (camTransform != null)
+        {
+            forward = camTransform.forward;
+            forward.y = 0f;
+            forward.Normalize();
+
+            right = camTransform.right;
+            right.y = 0f;
+            right.Normalize();
+        }
+
+        Vector3 move = (forward * v + right * h);
         move = Vector3.ClampMagnitude(move, 1f) * speed;
+
         rb.linearVelocity = new Vector3(move.x, rb.linearVelocity.y, move.z);
+
+        if (move.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(move);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15f * Time.fixedDeltaTime);
+        }
 
         if (jumpBufferTimer > 0f && coyoteTimer > 0f)
         {
@@ -68,6 +95,7 @@ public class PlayerController : MonoBehaviour
             coyoteTimer = -1f;
             isGrounded = false;
         }
+
         if (rb.linearVelocity.y < 0f)
         {
             rb.AddForce(Physics.gravity * (fallGravityMultiplier - 1f), ForceMode.Acceleration);
