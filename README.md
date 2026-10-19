@@ -20,14 +20,14 @@
 | Look-ahead | [0.35s] | Because of Player speed, a headset of 0.35 was set |
 ## Four answers
 ## Levels
-1. **The jump, in numbers.** [launch speed, jumpForce, time to apex, fall time, reach vs your widest gap]
-2. **Update and FixedUpdate.** [what each one does in your script, and what breaks if you swap them]
-3. **Vector3.Dot.** [the line, where it is or would go, and what its sign means there]
-4. **The juice.** [its curve, its duration in seconds and in frames at 60 fps, and why]
+1. **The jump, in numbers.** [speed 5f, jump force 6f, launch speed 5ms, time to apex 1.2ms, distance covered is 5.5m almost ]
+2. **Update and FixedUpdate.** [Updates run at every frame it handles input and keep tracks of timers and fixedUpdate runs at fixed times and handles world physics and camera movements , if we swap them input will miss and movement will vary with different framerates]
+3. **Vector3.Dot.** [The Dot product is used for checking is grounded by checking normal, and if dot product is +ve surface is facing up, -ve means facing downwards and 0 means wall]
+4. **The juice.** [EaseOutCurve, its duration is 0.2 seconds and 12 frames in frames at 60 fps, to create a responsive feedback]
 | Level | What the controller must do there | What I changed for this jump |
 |---|---|---|
-| Level01 | | |
-| Level02 | | |
-| Level03 | | |
-| Level04 | | |
-| Level05 | | |
+| Level01 | Flat terrain movement, player should move and reaching goal| Simple Player Movement|
+| Level02 | Movement across rooms with some covers, Player should move through it | Simple Player Movement|
+| Level03 | Moving up the slide and jumping accross the platform and reaching goal| Simple Player Movement|
+| Level04 | Moving through the narrow platform and jumping on the platform and reaching goal| Simple Player Movement|
+| Level05 | Moving through the course jumping up from the pit and reaching the goal| Simple Player Movement|
